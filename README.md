@@ -1,7 +1,10 @@
 # RAVE
 Raspberrypi AntiVirus Engine
 
-Installation
+## Installation
 
-1. Update your Rasbian
-  sudo apt-get update
+### Update your RasberryPi
+1. sudo apt-get update
+2. sudo apt-get upgrade
+3. sudo install clamav
+
