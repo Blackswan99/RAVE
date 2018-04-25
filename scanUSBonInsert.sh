@@ -1,2 +1,47 @@
 #!/bin/bash
 # Main shell script for scanning USB devices with AV engine
+
+lfile="/tmp/USB_AV_scan.log"
+echo >> "$lfile"# empty line
+echo $( date +'[%e.%b %Y %H:%M:%S]' )" Welcome to USB autoscan!" >> "$lfile"
+echo $( date +'[%e.%b %Y %H:%M:%S]' )" Checking for USB devices to mount..." >> "$lfile"
+echo $( date +'[%e.%b %Y %H:%M:%S]' )" Searching partitions"   >> "$lfile"
+# Scan every partition found
+for partitionPath in $( find /dev/disk/by-id/ -name "*usb*" )
+do
+        echo $( date +'[%e.%b %Y %H:%M:%S]' )" Partition found!" >> "$lfile"
+        echo $( date +'[%e.%b %Y %H:%M:%S]' )" Current partition = $partitionPath" >> "$lfile"
+        part_c="$( readlink -f $partitionPath )"
+        mkdir /media/tempusb
+        # Scan for devices like *usb*
+        pTS=$( /sbin/blkid | /bin/grep -i USB | /usr/bin/awk '{print $1}' )
+        if [ -z $pTS ]; then
+                # Devices like *usb* not found, scanning for e.g. NTFS
+                pTS=$( /sbin/blkid | /bin/grep -i ntfs | /usr/bin/awk '{print $1}' )
+        fi
+        # Removing the colon
+        pathToStick=${pTS::-1}
+        echo $( date +'[%e.%b %Y %H:%M:%S]' )" $pathToStick is mount path" >> "$lfile"
+        # Mounting USB device
+        mount "$pathToStick" /media/tempusb >> "$lfile"
+        # Scanning for viruses
+        echo $( date +'[%e.%b %Y %H:%M:%S]' )" ClamAV is scanning:  $pathToStick"  >> "$lfile"
+        clamscan -i -r /media/tempusb >> "$lfile"
+        if [ "$?" -eq "0" ]; then
+                echo >> "$lfile"
+                echo -e $( date +'[%e.%b %Y %H:%M:%S]' )"\e[92m NO VIRUS FOUND. Everything is fine.\e[0m" >> "$lfile"
+        elif [ "$?" -eq "1" ]; then
+                echo >> "$lfile"
+                echo -e $( date +'[%e.%b %Y %H:%M:%S]' )"\e[31m VIRUS FOUND. PLEASE CONTACT YOUR SYSTEM ADMINISTRATOR.\e[0m" >> "$lfile"
+        else
+                echo >> "$lfile"
+                echo $( date +'[%e.%b %Y %H:%M:%S]' )" Return code: $? - something went wrong while scanning, aborting..." >> "$lfile"
+        fi
+        echo $( date +'[%e.%b %Y %H:%M:%S]' )" Unmounting USB partition..." >> "$lfile"
+        umount /media/tempusb | tee -a "$lfile"
+        echo $( date +'[%e.%b %Y %H:%M:%S]' )" Cleaning up temp directory..." >> "$lfile"
+        rmdir /media/tempusb | tee -a "$lfile"
+        echo $( date +'[%e.%b %Y %H:%M:%S]' )" You can now detach USB drive." >> "$lfile"
+
+done
+echo $( date +'[%e.%b %Y %H:%M:%S]' )" Exiting USB autoscan. Goodbye." >> "$lfile"
