@@ -2,7 +2,7 @@
 # Main shell script for scanning USB devices with AV engine
 
 lfile="/tmp/USB_AV_scan.log"
-echo >> "$lfile"# empty line
+echo >> "$lfile" # empty line
 echo $( date +'[%e.%b %Y %H:%M:%S]' )" Welcome to USB autoscan!" >> "$lfile"
 echo $( date +'[%e.%b %Y %H:%M:%S]' )" Checking for USB devices to mount..." >> "$lfile"
 echo $( date +'[%e.%b %Y %H:%M:%S]' )" Searching partitions"   >> "$lfile"
