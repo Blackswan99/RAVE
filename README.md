@@ -1,5 +1,5 @@
 # RAVE
-Raspberrypi AntiVirus Engine
+**R**aspberrypi **A**nti**V**irus **E**ngine
 
 ## Installation
 
