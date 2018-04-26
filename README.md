@@ -1,5 +1,5 @@
 # RAVE
-**R**aspberrypi **A**nti**V**irus **E**ngine
+**R**aspberrypi **A**nti**V**irus **E**ngine is a script along with available software to autmatically scan USB devices (e.g. sticks or hard discs) when plugged in. The antivirus engine is ClamAV.
 
 ## Installation
 
