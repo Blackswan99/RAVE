@@ -8,3 +8,8 @@
 2. sudo apt-get upgrade
 3. sudo install clamav*
 
+
+
+
+
+*when clamav is installed from apt, you'll receive version 0.99.4. If you want the latest version (0.100.x), you have to download and compile yourself.
