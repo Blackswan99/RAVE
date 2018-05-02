@@ -7,6 +7,8 @@
 1. sudo apt-get update
 2. sudo apt-get upgrade
 3. sudo apt-get install clamav*
+4. wget https://github.com/Blackswan99/RAVE
+5. 
 
 ### Run the installation script
 
